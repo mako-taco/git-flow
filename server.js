@@ -16,12 +16,7 @@ module.exports = function (opts) {
 
 
 	this.app = express();	
-	if(user && pass) {
-		this.app.use(express.basicAuth({
-			user: user,
-			pass: pass
-		}))
-	}
+	if(user && pass) this.app.use(express.basicAuth(user, pass));
 	this.app.use(express.bodyParser());
 
 	this.app.post(route, requestHandler.bind(this));
