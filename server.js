@@ -22,6 +22,7 @@ module.exports = function (opts) {
 			pass: pass
 		}))
 	}
+	this.app.use(express.bodyParser());
 
 	this.app.post(route, requestHandler.bind(this));
 	this.hook = hook.bind(this);
