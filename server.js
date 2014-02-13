@@ -32,10 +32,10 @@ module.exports = function (opts) {
 			return;
 		}
 
-		var payload = req.body.payload;
+		var payload = req.body;
 
 		if(!payload) {
-			console.log("Recieved body w/o payload: ", req.body);
+			console.log("Recieved request w/o body.");
 			return;
 		}
 
