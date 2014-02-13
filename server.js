@@ -30,9 +30,9 @@ module.exports = function (opts) {
 		}))
 	}
 
-	this.app.post(route, requestHandler);
-	this.hook = hook;
-	this.pull = pull;
+	this.app.post(route, requestHandler.bind(this));
+	this.hook = hook.bind(this);
+	this.pull = pull.bind(this);
 	this.app.listen(port);
 
 	function requestHandler (req, res, next) {
@@ -52,14 +52,14 @@ module.exports = function (opts) {
 			console.error(e.stack);
 		}
 
-	}.bind(this);
+	};
 
 	function hook (branch, action) {
 		if(refs[branch] !== undefined) {
 			console.warn("Overwriting hook for " + branch);
 		}
 		refs[branch] = action.bind(this);
-	}.bind(this);
+	};
 
 	function pull (branch, callback) {
 		var stdout = "", stderr = "";
@@ -83,7 +83,7 @@ module.exports = function (opts) {
 				callback(null, stdout);
 			}
 		});
-	}.bind(this)
+	};
 };
 
 
