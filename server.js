@@ -57,9 +57,11 @@ module.exports = function (opts) {
 
 	function pull (branch, callback) {
 		var stdout = "", stderr = "";
-		var git = spawn("git", ["pull", "origin", branch, "--ff-only"], {
-			cwd: local
-		});
+		var cwd = process.cwd();
+
+		process.chdir(local);
+
+		var git = spawn("git", ["pull", "origin", branch, "--ff-only"]);
 
 		git.stderr.on("data", function (data) {
 			stderr += data.toString();
@@ -70,6 +72,7 @@ module.exports = function (opts) {
 		});
 
 		git.on("close", function(code) {
+			process.chdir(cwd);
 			if (code != 0) {
 				callback(new Error("Git exited with status code " + code + ": " + stderr));
 			}
