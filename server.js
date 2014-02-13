@@ -26,21 +26,26 @@ module.exports = function (opts) {
 
 	function requestHandler (req, res, next) {
 		res.send(200);
-		try {
-			var payload = JSON.parse(req.body.payload);
-			var fullRef = payload.ref;
-			var shortRef = fullRef.split('refs/heads/')[1];
-			var action = refs[fullRef] || refs[shortRef];
 
-			if(action) {
-				action(payload);
-			}
-		}
-		catch(e) {
-			console.error("Could not parse post-recieve hook body from githib:", req.body);
-			console.error(e.stack);
+		//rando Github pings-- ignore them
+		if(req.body.zen) {
+			return;
 		}
 
+		var payload = req.body.payload;
+
+		if(!payload) {
+			console.log("Recieved body w/o payload: ", req.body);
+			return;
+		}
+
+		var fullRef = payload.ref;
+		var shortRef = fullRef.split('refs/heads/')[1];
+		var action = refs[fullRef] || refs[shortRef];
+
+		if(action) {
+			action(payload);
+		}
 	};
 
 	function hook (branch, action) {
