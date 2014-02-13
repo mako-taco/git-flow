@@ -4,13 +4,6 @@ var exec = require('child_process').exec;
 module.exports = function (opts) {
 	opts = opts || {};
 
-	if(opts.remote === undefined) {
-		throw new Error("Missing required paramater `remote`");
-	}
-	
-	//Required
-	var remote = opts.remote;
-
 	//Optional
 	var port = opts.port || 8888;
 	var route = opts.route || "/";
